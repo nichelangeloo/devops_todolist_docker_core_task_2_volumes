@@ -9,6 +9,12 @@
 
 ## 1. Run MySQL Container with Volume Attached
 
+### Create network for containers
+
+```bash
+docker network create app-network
+```
+
 ### Build MySQL image locally (optional, if not pulling from Docker Hub)
 
 ```bash
@@ -19,8 +25,9 @@ docker build -f Dockerfile.mysql -t mysql-local:1.0.0 .
 
 ```bash
 docker run -d \
-  --name mysql-container \
+  --name hw-mysql \
   -v mysql_data:/var/lib/mysql \
+  --network app-network \
   -p 3306:3306 \
   mysql-local:1.0.0
 ```
@@ -28,8 +35,9 @@ docker run -d \
 **Explanation of flags:**
 
 - `-d` — run in detached (background) mode
-- `--name mysql-container` — give the container a recognizable name
+- `--name hw-mysql` — give the container a recognizable name
 - `-v mysql_data:/var/lib/mysql` — mount a named Docker volume to persist database data
+- `--network app-network` - makes containers be able to resolve each other and use container name as host
 - `-p 3306:3306` — expose MySQL port to the host
 
 ### Verify the container is running
@@ -37,14 +45,6 @@ docker run -d \
 ```bash
 docker ps
 ```
-
-### Get the MySQL container IP address
-
-```bash
-docker network inspect bridge
-```
-
-Find our running container from the list and get IP address from there.
 
 ---
 
@@ -62,10 +62,16 @@ docker pull <your-dockerhub-username>/todoapp:2.0.0
 
 ```bash
 docker run -d \
-  --name todoapp-container \
-  -p 8080:8080 \
+  --name hw-todoapp \
+  -p 8080:8000 \
+  --network app-network \
+  -e DB_HOST=hw-mysql \
+  -e DB_NAME=app_db \
+  -e DB_USER=app_user \
+  -e DB_PASSWORD=1234 \
   <your-dockerhub-username>/todoapp:2.0.0
 ```
+
 ---
 
 ## 3. Access the Application via Browser

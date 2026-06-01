@@ -64,11 +64,11 @@ WSGI_APPLICATION = "todolist.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'NAME': 'app_db',
-        'USER': 'app_user',
-        'PASSWORD': '1234',
+        'NAME': os.environ.get('DB_NAME','app_db'),
+        'USER': os.environ.get('DB_USER', 'app_user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', '1234'),
         # You can use a different host in your MySQL server is on a remote machine.
-        'HOST': 'hw-mysql',
+        'HOST': os.environ.get('DB_HOST', 'hw-mysql'),
         'PORT': '',  # Leave this empty to use the default MySQL port (3306).
     }
 
