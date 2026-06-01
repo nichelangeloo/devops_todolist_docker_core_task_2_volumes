@@ -68,7 +68,7 @@ DATABASES = {
         'USER': 'app_user',
         'PASSWORD': '1234',
         # You can use a different host in your MySQL server is on a remote machine.
-        'HOST': '172.17.0.2',
+        'HOST': 'hw-mysql',
         'PORT': '',  # Leave this empty to use the default MySQL port (3306).
     }
 
